@@ -1,4 +1,6 @@
 import { Component, VERSION, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { JsonEditorOptions } from 'ang-jsoneditor';
 import { sign } from 'jsonwebtoken';
 import { from } from 'rxjs';
@@ -12,9 +14,10 @@ export class AppComponent {
   public editorOptions: JsonEditorOptions;
   public initialData: any;
   public visibleData: any;
-  public privateKey = '';
+  public form: FormGroup;
 
-  constructor() {
+  constructor(private router: Router, private fb: FormBuilder) {
+    this.buildForm();
     this.editorOptions = new JsonEditorOptions();
     this.editorOptions.mode = 'code';
     this.initialData = {
@@ -25,8 +28,8 @@ export class AppComponent {
         systemId: 'AW78461',
         usrMod: 'BIZAGI',
         version: 1,
-        responseUrl: '',
-        urlCancel: '',
+        responseUrl: 'https://www.google.com/',
+        urlCancel: 'https://www.facebook.com/',
       },
       start: {
         productId: '8',
@@ -38,16 +41,25 @@ export class AppComponent {
     this.visibleData = this.initialData;
   }
 
+  buildForm(): void {
+    this.form = this.fb.group({
+      privateKey: ['', []],
+    });
+  }
+
   showJson(d: Event): void {
     this.visibleData = d;
   }
 
   generateJwt(): void {
-    console.log(
-      sign(this.initialData, this.privateKey, {
-        expiresIn: '500s',
-        algorithm: 'RS256',
-      })
+    const privateKey = this.form.get('privateKey').value; 
+    const token = sign(this.initialData, privateKey, {
+      expiresIn: '500s',
+      algorithm: 'RS256',
+    });
+    window.open(
+      `https://my-url.com/?t=${token}&aw=AWCONSUMER1`,
+      '_blank'
     );
   }
 }

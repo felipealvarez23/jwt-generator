@@ -1,21 +1,31 @@
-<label for="">JWT:</label>
-<select name="" id="">
-  <option value="">Basico</option>
-  <option value="">Completo</option>
-</select>
+<form [formGroup]="form">
+  <label for="">JWT:</label>
+  <select name="" id="">
+    <option value="">Basico</option>
+    <option value="">Completo</option>
+  </select>
 
-<label for="">Ambiente:</label>
-<select name="" id="">
-  <option value="">local</option>
-  <option value="">dev</option>
-  <option value="">qa</option>
-  <option value="">pdn</option>
-</select>
+  <label for="">Ambiente:</label>
+  <select name="" id="">
+    <option value="">local</option>
+    <option value="">dev</option>
+    <option value="">qa</option>
+    <option value="">pdn</option>
+  </select>
 
-<json-editor
-  [options]="editorOptions"
-  [data]="initialData"
-  (change)="showJson($event)"
-></json-editor>
+  <json-editor
+    [options]="editorOptions"
+    [data]="initialData"
+    (change)="showJson($event)"
+  ></json-editor>
 
-<button (click)="generateJwt()">Navegar</button>
+  <textarea
+    placeholder="Private Key"
+    name="private-key"
+    cols="40"
+    rows="20"
+    [formControlName]="'privateKey'"
+  ></textarea>
+
+  <button (click)="generateJwt()">Navegar</button>
+</form>
