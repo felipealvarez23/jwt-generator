@@ -2,6 +2,7 @@ import { Component, VERSION, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JsonEditorOptions } from 'ang-jsoneditor';
+import { v4 as uuid } from 'uuid';
 import { sign } from 'jsonwebtoken';
 import { from } from 'rxjs';
 
@@ -23,7 +24,7 @@ export class AppComponent {
     this.initialData = {
       iat: 1648075435,
       meta: {
-        messageId: '31211565-6905-3cb3-8d27-3fea93c27b1d',
+        messageId: 'Este campo se genera automaticamente',
         requestDate: 20150625200000,
         systemId: 'AW78461',
         usrMod: 'BIZAGI',
@@ -52,13 +53,14 @@ export class AppComponent {
   }
 
   generateJwt(): void {
-    const privateKey = this.form.get('privateKey').value; 
+    const privateKey = this.form.get('privateKey').value;
+    this.initialData.meta.messageId = uuid();
     const token = sign(this.initialData, privateKey, {
-      expiresIn: '500s',
+      expiresIn: '365d',
       algorithm: 'RS256',
     });
     window.open(
-      `https://my-url.com/?t=${token}&aw=AWCONSUMER1`,
+      `https://my-url/?t=${token}&aw=AW`,
       '_blank'
     );
   }
