@@ -5,6 +5,7 @@ import { JsonEditorOptions } from 'ang-jsoneditor';
 import { v4 as uuid } from 'uuid';
 import { sign } from 'jsonwebtoken';
 import { from } from 'rxjs';
+import { env } from './core/model/app.config';
 
 @Component({
   selector: 'my-app',
@@ -45,6 +46,7 @@ export class AppComponent {
   buildForm(): void {
     this.form = this.fb.group({
       privateKey: ['', []],
+      env: ['local'],
     });
   }
 
@@ -54,14 +56,18 @@ export class AppComponent {
 
   generateJwt(): void {
     const privateKey = this.form.get('privateKey').value;
+    const envSelected = this.form.get('env').value;
+    const envUrl = this.getUrl(envSelected);
+
     this.initialData.meta.messageId = uuid();
     const token = sign(this.initialData, privateKey, {
       expiresIn: '365d',
       algorithm: 'RS256',
     });
-    window.open(
-      `https://my-url/?t=${token}&aw=AW`,
-      '_blank'
-    );
+    window.open(`https://${envUrl}/?t=${token}&aw=AW`, '_blank');
+  }
+
+  private getUrl(envName: string) {
+    return env.find((envData) => envData.name === envName).url;
   }
 }

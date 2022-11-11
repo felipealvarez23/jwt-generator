@@ -6,11 +6,11 @@
   </select>
 
   <label for="">Ambiente:</label>
-  <select name="" id="">
-    <option value="">local</option>
-    <option value="">dev</option>
-    <option value="">qa</option>
-    <option value="">pdn</option>
+  <select [formControlName]="'env'">
+    <option value="local">local</option>
+    <option value="dev">dev</option>
+    <option value="qa">qa</option>
+    <option value="pdn">pdn</option>
   </select>
 
   <json-editor
