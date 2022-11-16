@@ -64,7 +64,7 @@ export class AppComponent {
       expiresIn: '365d',
       algorithm: 'RS256',
     });
-    window.open(`https://${envUrl}/?t=${token}&aw=AW`, '_blank');
+    window.open(`${envUrl}/?t=${token}&aw=AW`, '_blank');
   }
 
   private getUrl(envName: string) {
