@@ -1,8 +1,13 @@
 <form [formGroup]="form">
   <label for="">JWT:</label>
-  <select name="" id="">
-    <option value="">Basico</option>
-    <option value="">Completo</option>
+  <select
+    [formControlName]="'jwtType'"
+    name=""
+    id=""
+    (change)="jwtTypeChange($event)"
+  >
+    <option value="basic">Basico</option>
+    <option value="complete">Completo</option>
   </select>
 
   <label for="">Ambiente:</label>

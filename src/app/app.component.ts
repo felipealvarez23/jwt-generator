@@ -22,30 +22,14 @@ export class AppComponent {
     this.buildForm();
     this.editorOptions = new JsonEditorOptions();
     this.editorOptions.mode = 'code';
-    this.initialData = {
-      iat: 1648075435,
-      meta: {
-        messageId: 'Este campo se genera automaticamente',
-        requestDate: 20150625200000,
-        systemId: 'AW78461',
-        usrMod: 'BIZAGI',
-        version: 1,
-        responseUrl: 'https://www.google.com/',
-        urlCancel: 'https://www.facebook.com/',
-      },
-      start: {
-        productId: '8',
-        subProductCategory: '8001',
-        channelId: '002',
-        businessLineId: '002',
-      },
-    };
+    this.initialData = this.getBasicInformation();
     this.visibleData = this.initialData;
   }
 
   buildForm(): void {
     this.form = this.fb.group({
       privateKey: ['', []],
+      jwtType: ['basic', []],
       env: ['local'],
     });
   }
@@ -67,7 +51,41 @@ export class AppComponent {
     window.open(`${envUrl}/?t=${token}&aw=AW`, '_blank');
   }
 
+  jwtTypeChange(e) {
+    const jwtType = this.form.get('jwtType').value;
+    if (jwtType === 'basic') {
+      this.initialData = this.getBasicInformation();
+    } else {
+      this.initialData = this.getFullInformation();
+    }
+  }
+
   private getUrl(envName: string) {
     return env.find((envData) => envData.name === envName).url;
+  }
+
+  private getBasicInformation(): any {
+    return {
+      iat: 1648075435,
+      meta: {
+        messageId: 'Este campo se genera automaticamente',
+        requestDate: 20150625200000,
+        systemId: 'AW78461',
+        usrMod: 'BIZAGI',
+        version: 1,
+        responseUrl: 'https://www.google.com/',
+        urlCancel: 'https://www.facebook.com/',
+      },
+      start: {
+        productId: '8',
+        subProductCategory: '8001',
+        channelId: '002',
+        businessLineId: '002',
+      },
+    };
+  }
+
+  private getFullInformation(): any {
+    return {};
   }
 }
